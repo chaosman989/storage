@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="scripts.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="Myfile" id="">
+    <form action="index.html">
+        <button>
+        back
+    </button>
+    </form>
+    
+   
+    <form action="/uploads" method="post" enctype="multipart/form-data">
+
+        <input type="file" name="Myfile" id="" required>
+        <input type="text" name="customName" id="" required>
         <button type="submit">upload</button>
     </form>
+     <h1>uploaded files</h1>
+     <div id="file-container"></div>
 </body>
 </html>
