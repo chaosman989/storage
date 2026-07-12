@@ -3,7 +3,7 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const path = require('path');
 const fs = require('fs');
-
+const { error } = require('console');
 const app = express();
 
 // 1. Ensure the uploads directory exists
@@ -14,7 +14,7 @@ app.use(express.static(__dirname));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb){
+    destination:  (req, file, cb) =>{
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb){
@@ -43,6 +43,35 @@ app.get('/api/files', async (req, res) => {
     }
 });
 
+app.post('/truncate-db', async (req, res) =>{
+    const sql = "TRUNCATE TABLE files;";
+    try{
+        // 1. Delete all physical files from the disk
+        const uploadDir = path.join(__dirname, 'uploads');
+        
+        if (fs.existsSync(uploadDir)) {
+            const filesInFolder = fs.readdirSync(uploadDir);
+            
+            for (const file of filesInFolder) {
+                fs.unlinkSync(path.join(uploadDir, file));
+            }
+            console.log("All physical files deleted.");
+        }
+        await db.execute(sql);
+        res.sendStatus(200);
+    }
+     catch(error){
+        console.error(error);
+        res.sendStatus(500);
+    
+} 
+
+});
+
+
+
+
+
 // 4. Serving the index page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -50,6 +79,9 @@ app.get('/', (req, res) => {
 
 // 5. Upload handler
 app.post('/uploads', upload.single('Myfile'), async (req, res) => {
+    if (!req.file){
+        return res.status(400).send('<h1> please add a file<h1> <a href="/storage.html"</a>')
+    }
     try {
        
         const { filename, originalname, path: filePath } = req.file;
@@ -62,4 +94,5 @@ app.post('/uploads', upload.single('Myfile'), async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+
+app.listen(3000, () => console.log('storagetest:3000'));

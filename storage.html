@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+    <script src="server.js"></script>
 </head>
 <body>
     <form action="index.html">
@@ -12,6 +13,10 @@
         back
     </button>
     </form>
+   
+        <button type="button" id="wipebtn">delete all</button>
+        
+    
     
    
     <form action="/uploads" method="post" enctype="multipart/form-data">
@@ -22,5 +27,6 @@
     </form>
      <h1>uploaded files</h1>
      <div id="file-container"></div>
+
 </body>
 </html>

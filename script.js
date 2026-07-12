@@ -1,4 +1,4 @@
-// script.js
+
 fetch('/api/files')
     .then(response => response.json())
     .then(files => {
@@ -27,3 +27,10 @@ fetch('/api/files')
         });
     })
     .catch(error => console.error('Error loading files:', error));
+    
+   document.getElementById('wipebtn').addEventListener('click', async () => {
+     await fetch ('/truncate-db', {method: 'POST'})
+     location.reload();
+   });
+  
+   
