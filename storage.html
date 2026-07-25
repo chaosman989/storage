@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="script.js" defer></script>
-    <script src="server.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <form action="index.html">
-        <button>
+        <button class="buttons">
         back
     </button>
     </form>
    
-        <button type="button" id="wipebtn">delete all</button>
+        <button type="button" class="buttons" id="wipebtn">delete all</button>
         
     
     
    
     <form action="/uploads" method="post" enctype="multipart/form-data">
 
-        <input type="file" name="Myfile" id="" required>
-        <input type="text" name="customName" id="" required>
+        <input type="file" class="choosefile" name="Myfile" id="" required>
+        <input type="text" name="customName" class="inputs" id="custom-name-input" required>
         <button type="submit">upload</button>
+        
     </form>
      <h1>uploaded files</h1>
      <div id="file-container"></div>

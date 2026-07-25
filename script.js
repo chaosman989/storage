@@ -7,10 +7,11 @@ fetch('/api/files')
         files.forEach(file => {
             const wrapper = document.createElement('div');
             const fileLink = document.createElement('a');
+            fileLink.className = 'filesnames';
             
             // Set the link target
             fileLink.href = file.path;
-            fileLink.textContent = file.filename; // Displays the name
+            fileLink.textContent = file.custom_name; // Displays the name
             fileLink.target = "_blank"; // Opens in new tab
             
             // Check if it's an image to show a preview

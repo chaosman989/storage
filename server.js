@@ -15,7 +15,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const storage = multer.diskStorage({
     destination:  (req, file, cb) =>{
-        cb(null, 'uploads/');
+        cb(null, 'X:/');
     },
     filename: function (req, file, cb){
         // Keeps the unique timestamp + original name for readability
@@ -36,7 +36,7 @@ const db = mysql.createPool ({
 // 3. API route to get file list
 app.get('/api/files', async (req, res) => {
     try {
-        const [rows] = await db.execute("SELECT filename, path FROM files");
+        const [rows] = await db.execute("SELECT filename, custom_name, path FROM files");
         res.json(rows);
     } catch (err) {
         res.status(500).send('Database error');
@@ -47,7 +47,7 @@ app.post('/truncate-db', async (req, res) =>{
     const sql = "TRUNCATE TABLE files;";
     try{
         // 1. Delete all physical files from the disk
-        const uploadDir = path.join(__dirname, 'uploads');
+        const uploadDir = ('X:/uploads');
         
         if (fs.existsSync(uploadDir)) {
             const filesInFolder = fs.readdirSync(uploadDir);
@@ -83,10 +83,13 @@ app.post('/uploads', upload.single('Myfile'), async (req, res) => {
         return res.status(400).send('<h1> please add a file<h1> <a href="/storage.html"</a>')
     }
     try {
+
+        const customname = req.body.customName || req.file.originalname
+        
        
         const { filename, originalname, path: filePath } = req.file;
-        const sql = 'INSERT INTO files (filename, original_name, path) VALUES (?, ?, ?)';
-        await db.execute(sql, [filename, originalname, filePath]);
+        const sql = 'INSERT INTO files (filename, custom_name, path) VALUES (?, ?, ?)';
+        await db.execute(sql, [filename, customname, filePath]);
         res.send('<h1>Success</h1> <a href="/storage.html">back</a>');
     } catch (error) {
         console.error(error);
